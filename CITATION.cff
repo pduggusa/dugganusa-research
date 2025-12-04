@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: "DugganUSA Threat Intelligence Research"
+message: "If you use this research, please cite it as below."
+type: dataset
+authors:
+  - family-names: "Duggan"
+    given-names: "Patrick"
+    email: "patrick@dugganusa.com"
+    orcid: "https://orcid.org/0009-0001-0628-9963"
+    affiliation: "DugganUSA LLC"
+repository-code: "https://github.com/pduggusa/dugganusa-research"
+url: "https://www.dugganusa.com"
+abstract: >-
+  Peer-review-ready threat intelligence research including supply chain
+  attack detection patterns (38-47), production-tested detection rules
+  with measured false positive rates, compliance-as-code frameworks,
+  and novel methodologies for threat actor attribution. All research
+  is evidence-backed with production validation including 5 suspended
+  GitHub accounts and 1,500+ blocked malicious IPs.
+keywords:
+  - threat-intelligence
+  - supply-chain-security
+  - detection-rules
+  - github-security
+  - malware-detection
+  - stix-taxii
+  - compliance-as-code
+license: CC-BY-4.0
+version: "1.0.0"
+date-released: "2025-12-03"
