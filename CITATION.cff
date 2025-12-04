@@ -28,3 +28,8 @@ keywords:
 license: CC-BY-4.0
 version: "1.0.0"
 date-released: "2025-12-03"
+doi: "10.5281/zenodo.17810099"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.17810099"
+    description: "Zenodo archive DOI"
