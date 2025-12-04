@@ -63,9 +63,10 @@ Production-tested on 1,500+ blocked IPs with 94.04% precision after curation.
 
 | Framework | Innovation | Validation |
 |-----------|------------|------------|
+| [D&D Threat Taxonomy](./methodologies/dnd-threat-taxonomy.md) | Gamified threat classification (CR 0-30+) | 1,422 IPs, 243 Divine-tier |
 | [Story Density Analyzer (120.9 Ratio)](./methodologies/story-density-analyzer.md) | Quantified engagement in technical writing | 8m 26s avg session, 0.3% bounce |
 | [PsyOps Detection Framework](./methodologies/psyops-detection-framework.md) | 20-point manipulation scoring | 95% confidence cap |
-| [Convergent Evolution Metrics](./methodologies/convergent-evolution-metrics.md) | 8D validation with factorial strength | 40,320x cross-validation |
+| [Convergent Evolution Metrics](./methodologies/factorial-validation-8d.md) | 8D validation with factorial strength | 40,320x cross-validation |
 
 ### Case Studies (Supporting Evidence)
 
