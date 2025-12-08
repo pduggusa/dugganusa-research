@@ -12,11 +12,12 @@ repository-code: "https://github.com/pduggusa/dugganusa-research"
 url: "https://www.dugganusa.com"
 abstract: >-
   Peer-review-ready threat intelligence research including supply chain
-  attack detection patterns (38-47), production-tested detection rules
-  with measured false positive rates, compliance-as-code frameworks,
-  and novel methodologies for threat actor attribution. All research
-  is evidence-backed with production validation including 5 suspended
-  GitHub accounts and 1,500+ blocked malicious IPs.
+  attack detection patterns (38-52), PreCrime for Security methodology
+  (Pattern 52), production-tested detection rules with measured false
+  positive rates, compliance-as-code frameworks, and novel methodologies
+  for predictive threat intelligence. All research is evidence-backed
+  with production validation including 9 GitHub Security disclosures,
+  52,397 indicators, 88.9% novel detection rate, and 20 OTX subscribers.
 keywords:
   - threat-intelligence
   - supply-chain-security
@@ -25,9 +26,12 @@ keywords:
   - malware-detection
   - stix-taxii
   - compliance-as-code
+  - precrime
+  - predictive-security
+  - left-of-boom
 license: CC-BY-4.0
-version: "1.0.0"
-date-released: "2025-12-03"
+version: "2.0.0"
+date-released: "2025-12-08"
 doi: "10.5281/zenodo.17810099"
 identifiers:
   - type: doi

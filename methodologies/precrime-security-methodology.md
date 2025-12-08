@@ -2,7 +2,7 @@
 
 **Authors:** Patrick Duggan (DugganUSA LLC)
 **Date:** December 8, 2025
-**Version:** 1.0
+**Version:** 2.0.0
 **Status:** Peer-review ready
 
 ## Abstract
