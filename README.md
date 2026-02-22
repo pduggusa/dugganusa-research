@@ -13,7 +13,7 @@
 
 ## Built With Claude Code (Anthropic)
 
-This research was conducted, documented, and consolidated using **[Claude Code](https://claude.ai/code)** - Anthropic's agentic AI CLI running **Claude Opus 4.5** (`claude-opus-4-5-20251101`).
+This research was conducted, documented, and consolidated using **[Claude Code](https://claude.ai/code)** - Anthropic's agentic AI CLI running **Claude Opus 4.6** (`claude-opus-4-6`).
 
 The entire research pipeline demonstrates enterprise-grade agentic AI capability:
 
@@ -68,6 +68,7 @@ Production-tested on 1,500+ blocked IPs with 94.04% precision after curation.
 | [PsyOps Detection Framework](./methodologies/psyops-detection-framework.md) | 20-point manipulation scoring | 95% confidence cap |
 | [Convergent Evolution Metrics](./methodologies/factorial-validation-8d.md) | 8D validation with factorial strength | 40,320x cross-validation |
 | [Interstellar Engineering Analysis](./methodologies/interstellar-engineering-analysis.md) | Engineering-first methodology for ISO assessment | 3I/ATLAS case study, March 2026 test |
+| [The CERN Method: Signal Detection at Scale](./methodologies/cern-signal-detection-at-scale.md) | CERN pipeline applied to intelligence analysis, Ma'at Standard | 7.4M docs, 95% confidence cap |
 
 ### Case Studies (Supporting Evidence)
 
