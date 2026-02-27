@@ -67,7 +67,7 @@ Production-tested on 1,500+ blocked IPs with 94.04% precision after curation.
 | [Story Density Analyzer (120.9 Ratio)](./methodologies/story-density-analyzer.md) | Quantified engagement in technical writing | 8m 26s avg session, 0.3% bounce |
 | [PsyOps Detection Framework](./methodologies/psyops-detection-framework.md) | 20-point manipulation scoring | 95% confidence cap |
 | [Convergent Evolution Metrics](./methodologies/factorial-validation-8d.md) | 8D validation with factorial strength | 40,320x cross-validation |
-| [Interstellar Engineering Analysis](./methodologies/interstellar-engineering-analysis.md) | Engineering-first methodology for ISO assessment | 3I/ATLAS case study, March 2026 test |
+| [Interstellar Engineering Analysis v1.3](./methodologies/interstellar-engineering-analysis.md) | Engineering-first methodology for ISO assessment | 3I/ATLAS: 29+ anomalies, 7 predictions, JUICE data integrated. **17 days to Jupiter test.** |
 | [The CERN Method: Signal Detection at Scale](./methodologies/cern-signal-detection-at-scale.md) | CERN pipeline applied to intelligence analysis, Ma'at Standard | 7.4M docs, 95% confidence cap |
 
 ### Case Studies (Supporting Evidence)
