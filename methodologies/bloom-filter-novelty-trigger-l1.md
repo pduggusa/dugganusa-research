@@ -4,8 +4,10 @@
 **ORCID:** [0009-0001-0628-9963](https://orcid.org/0009-0001-0628-9963)
 **Affiliation:** DugganUSA LLC, Minneapolis, Minnesota
 **Date:** April 22, 2026
-**Version:** 1.0
+**Version:** 1.1
 **License:** CC BY 4.0
+
+*v1.1 (Apr 22, 2026): §7 expanded to explicitly recommend per-family Markov likelihood scoring as the preferred second stage, with cross-reference to the companion paper.*
 
 ---
 
@@ -144,12 +146,15 @@ A bloom filter flags what has not been seen. It does not flag what is physically
 
 This is real. Any "keep what we haven't seen" L1 without a downstream rejection stage would rapidly saturate its bandwidth budget with detector pathology.
 
-Two plausible designs for the second stage:
+Three plausible designs for the second stage:
 
 1. **A second bloom filter of known artifacts.** Trained on tagged beam-gas, cosmic, noisy-channel, and pile-up-anomaly samples. Same primitive, opposite polarity: if the event hashes to the "known artifact" filter, drop. The novelty flag only fires when the event is *both* novel to the physics filter *and* not in the artifact filter. This has the virtue of remaining model-free and auditable.
 2. **A small autoencoder — reusing AXOL1TL or an equivalent.** Novel-and-not-reconstructed-cleanly = interesting. This is an honest complement, not a competitor: AXOL1TL already does the reconstruction check well; bloom provides the cheap, deterministic pre-filter that decides which events even get that check.
+3. **Per-family Markov likelihood scoring — the approach we recommend.** Train separate Markov chains over feature-sequence representations of (a) known-physics event classes, (b) known detector pathologies, (c) known beam-gas / pile-up / cosmic signatures. Score the flagged event under each family. The event most deserving of HLT attention is the one least likely under *all three* families. This inverts the usual "classify into the best-matching family" question into "flag events that fit none of them" — the same novelty-preservation spirit as the bloom layer, applied again at the classification step. Latency budget is generous: the L1→HLT transit gives 5–10 µs, and k-step Markov likelihood for k ~ 20–50 runs in hundreds of nanoseconds on the same FPGA fabric. DugganUSA runs this architecture in production today on the `markov_models` and `behavioral_sessions` indexes for web-traffic classification; the cross-domain correspondence is explicit in the companion paper.
 
-A first prototype would use approach (1) because it keeps the entire pipeline model-free and interpretable. A production system likely uses (2) because autoencoder reconstruction is a more semantically meaningful "is this a glitch?" signal than another hash check.
+A first prototype likely uses approach (1) because it keeps the entire pipeline model-free and interpretable. A production system benefits from (3) because comparative per-family likelihood gives a calibrated answer to "which kind of novel is this" without collapsing back into known-physics template rejection. Approaches (2) and (3) are complementary; the Markov stage can route the hardest cases to the autoencoder for final judgment.
+
+**Companion paper** — the Markov second-stage architecture is written up in detail in [*Which Kind of Novel? Markov Second-Stage Classification for Novelty-First L1 Triggers*](./markov-novelty-classification-second-stage.md), published alongside this brief. §3–§6 there give the architecture, latency budget, and the DugganUSA production receipts.
 
 What is emphatically *not* being proposed is that bloom replaces autoencoder-based anomaly detection. The argument is that a deterministic, interpretable, memory-efficient pre-filter belongs in front of the learned anomaly detector, and that the memory now exists to put it there.
 
