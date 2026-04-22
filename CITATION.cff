@@ -32,8 +32,8 @@ keywords:
   - predictive-security
   - left-of-boom
 license: CC-BY-4.0
-version: "2.4.0"
-date-released: "2026-02-27"
+version: "2.5.0"
+date-released: "2026-04-22"
 doi: "10.5281/zenodo.17810099"
 identifiers:
   - type: doi
