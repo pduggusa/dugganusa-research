@@ -4,10 +4,11 @@
 **ORCID:** [0009-0001-0628-9963](https://orcid.org/0009-0001-0628-9963)
 **Affiliation:** DugganUSA LLC, Minneapolis, Minnesota
 **Date:** April 22, 2026
-**Version:** 1.1
+**Version:** 1.2
 **License:** CC BY 4.0
 
 *v1.1 (Apr 22, 2026): §7 expanded to explicitly recommend per-family Markov likelihood scoring as the preferred second stage, with cross-reference to the companion paper.*
+*v1.2 (Apr 22, 2026): §12 addendum formalizing the matrix-multiply equivalence of LSH projection, autoencoder latent, and Markov scoring; argues that the compression step reader-feedback identified as "where all the interesting challenges are" is also where silicon is fastest, so paying the cost once yields two complementary signals (r, b) rather than one.*
 
 ---
 
@@ -213,6 +214,82 @@ The remaining hard problem is not memory. It is the feature projector — turnin
 This brief does not claim bloom triggers will find new physics. It claims that a deterministic, model-free, memory-efficient novelty pre-filter now fits in the L1 latency budget, and that a BSM experiment is epistemically better served by a trigger that preserves the unseen than by one that rejects it. The memory has moved. The question worth revisiting is whether the algorithm should move with it.
 
 95% epistemic cap applies. 5% of the above is wrong. The useful next step is to identify which 5%.
+
+---
+
+## 12. Addendum (v1.2): Matrix-Vector Multiply as the Unifying Primitive
+
+A careful reader observes that the hard work in any novelty-detection pipeline for LHC data is the mapping from the ~$10^8$-dimensional raw detector manifold into a lower-dimensional space amenable to hashing or reconstruction, and that autoencoders are already doing that mapping and emitting reconstruction loss as an anomaly score. The implicit conclusion: a bloom filter bolted on top adds nothing.
+
+That concession is the argument *for* this approach, not against it. The compression step is not a cost incurred by adding bloom; it is the operation silicon already accelerates natively, and it yields two orthogonal signals rather than one when the bloom rides on the latent.
+
+### 12.1 Three primitives, one operation
+
+The three feature-space compression methods in play reduce to the same computational kernel: matrix-vector multiplication.
+
+**LSH projection** (Johnson–Lindenstrauss random projection, SimHash, MinHash variants):
+
+$$ h(x) \;=\; \mathrm{sign}(R \cdot x), \qquad R \in \mathbb{R}^{k \times d} $$
+
+with $k = O(\log n / \varepsilon^2)$ by the Johnson–Lindenstrauss lemma for $\varepsilon$-approximate pairwise-distance preservation.
+
+**Autoencoder latent**:
+
+$$ z \;=\; \sigma(W_e \cdot x + b_e), \qquad W_e \in \mathbb{R}^{m \times d}, \quad m \ll d $$
+
+**Markov per-family log-likelihood** over a state sequence $s_1, s_2, \ldots, s_T$ drawn from alphabet $\Sigma$:
+
+$$ \log P(s \mid \theta_f) \;=\; \log \pi_f[s_1] \;+\; \sum_{t=2}^{T} \log T_f[s_{t-1},\, s_t], \qquad T_f \in \mathbb{R}^{|\Sigma| \times |\Sigma|} $$
+
+All three have the same instruction-level shape: $y = A \cdot x$ with $A$ a matrix whose entries are either pre-sampled (LSH), trained (autoencoder), or estimated from counts (Markov). This is GEMM.
+
+Note also the dimensionality on which L1 actually operates. The $10^8$-dim figure is the raw detector output prior to the frontend pipeline. By the time the L1 trigger is making decisions, zero-suppression, BCID filtering, cell clustering, calorimeter summing to trigger towers, and L1Track finding have already reduced the representation to $\mathcal{O}(10^3)$ trigger-object features. Both the autoencoder and any LSH projector ingest that compressed vector, not the raw $10^8$.
+
+### 12.2 The acceleration is already paid for
+
+GEMM is the most heavily optimized operation on modern silicon. At the scales relevant to a 25 ns L1 budget:
+
+| Silicon | Throughput on the relevant GEMM shape |
+|---|---|
+| AMD Versal ACAP AI Engine tile | ~128 fp32 MACs/cycle per tile; a $32 \times 10^3$ projection on a single VCK5000 mesh completes in tens of nanoseconds |
+| Versal DSP58 slice | 1 MAC/cycle, thousands of slices per Premium device — already the workhorse of current L1 trigger firmware |
+| Samsung HBM-PIM (Aquabolt-XL) | GEMM inside DRAM, ~4.92 TB/s aggregate bandwidth; eliminates the memory-wall for the projection step entirely |
+| NVIDIA tensor cores (GPU-class) | Not in the L1 rack, but establishes the ceiling: matrix-multiply is *the* benchmark modern silicon is optimized for |
+
+Projecting a $10^3$-dim feature vector through a $32 \times 10^3$ autoencoder encoder ($\sim$32,000 MACs) lands well inside the 25 ns envelope on any of the L1-compatible silicon above. The encoder cost is not an addition on top of a bloom trigger; it is the operation the hardware was designed to run. Refusing to reuse its output because of a naming dispute (LSH vs. autoencoder vs. Markov) is leaving free signal on the floor.
+
+### 12.3 The bloom rides on the latent
+
+Once the encoder has produced $z \in \mathbb{R}^m$ (commonly $m \approx 32$), the bloom-filter novelty check is additive cost:
+
+$$ t_{\text{bloom}} \;=\; k \cdot \left( t_{\text{hash}} + t_{\text{memread}} \right) $$
+
+with $k \approx 7$ hash functions, $t_{\text{hash}} \approx 1\text{–}2$ ns for a SHA-family or MurmurHash3 implementation on FPGA, and $t_{\text{memread}} \approx 1\text{–}3$ ns on URAM or HBM-PIM. Total $t_{\text{bloom}} \approx 15\text{–}35$ ns, which sits comfortably inside the L1→HLT transit (order 5–10 μs) and can overlap the autoencoder's decoder path entirely.
+
+### 12.4 Two orthogonal signals from one projection
+
+Define the autoencoder's reconstruction loss and the bloom's seen-before indicator:
+
+$$ r(x) \;=\; \bigl\| x - D\bigl(E(x)\bigr) \bigr\|, \qquad b(z) \;=\; \mathrm{BloomLookup}(z) \in \{\text{seen},\, \text{unseen}\} $$
+
+These two signals answer different questions. $r$ asks whether the event sits on the smooth manifold the autoencoder has learned to reconstruct; $b$ asks whether the specific latent coordinate has ever been visited in training. An autoencoder's weights are a compressed summary of the training distribution, not a searchable log of past events — so $r$ cannot emit the question $b$ answers.
+
+The joint signal $(r, b)$ disambiguates cases that either alone cannot:
+
+| $r$ | $b$ | Interpretation |
+|---|---|---|
+| low | seen | Known, in-distribution. Drop. |
+| **low** | **unseen** | **Novel coordinate inside the learned manifold. Candidate BSM signature. This is the case the autoencoder alone cannot flag.** |
+| high | seen | Detector pathology in a familiar region. Drop or route to detector ops. |
+| high | unseen | Novel and anomalous — highest-priority candidate. Both systems agree. |
+
+Row 2 is the case worth preserving the architecture for. A BSM event whose latent lands in an under-populated but not out-of-manifold region produces low reconstruction loss (the decoder generalizes smoothly) and an unseen bloom hit. The autoencoder's reconstruction-loss scalar is, by design, too smooth to flag this.
+
+### 12.5 Tagline
+
+*Projection, not addition.*
+
+The bloom does not add a stage. It reads a byproduct of the stage that was going to run anyway. The mapping from high-dim to low-dim is indeed where the interesting challenges are — and where silicon is fastest. Paying that cost once and extracting two complementary signals is better engineering than paying it once and extracting one.
 
 ---
 
