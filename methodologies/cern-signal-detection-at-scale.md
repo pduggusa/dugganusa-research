@@ -1,4 +1,4 @@
-p# The CERN Method: Signal Detection at Scale — From Higgs Bosons to Hidden Networks
+# The CERN Method: Signal Detection at Scale — From Higgs Bosons to Hidden Networks
 
 **Author:** Patrick Duggan
 **ORCID:** [0009-0001-0628-9963](https://orcid.org/0009-0001-0628-9963)
