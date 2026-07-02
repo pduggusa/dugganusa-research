@@ -205,7 +205,7 @@ Similarly, DugganUSA's most important output is not any individual finding — n
 |--------------------------|--------|
 | Multi-index search API | Any document, any index, <100ms |
 | Cross-correlation engine | Automatic multi-source validation |
-| STIX feed (275+ consumers, 46 countries) | Real-time threat intelligence sharing |
+| STIX feed (public; lifetime pulls from 46 countries, operational consumers in the low double digits) | Real-time threat intelligence sharing |
 | Free public access | No paywall, no login, no gatekeeping |
 
 **The infrastructure for discovery is more important than any individual discovery.** CERN understood this. WikiLeaks did not — they built a submission platform, not a search platform, and when their submission pipeline broke (because their founder went to prison), everything stopped.
