@@ -6,7 +6,7 @@
 **ORCID:** [0009-0001-0628-9963](https://orcid.org/0009-0001-0628-9963)
 **DOI:** [10.5281/zenodo.17810099](https://doi.org/10.5281/zenodo.17810099)
 **Affiliation:** DugganUSA LLC, Minnesota
-**Contact:** patrick@dugganusa.com
+**Contact:** help@dugganusa.com
 **License:** CC BY 4.0 (Attribution) unless otherwise noted
 
 ---
@@ -15,7 +15,7 @@
 
 This research was conducted, documented, and consolidated using **[Claude Code](https://claude.ai/code)** - Anthropic's agentic AI CLI running **Claude Opus 4.6** (`claude-opus-4-6`).
 
-The entire research pipeline demonstrates enterprise-grade agentic AI capability:
+The research pipeline:
 
 - **Multi-agent exploration** - 5 parallel agents swept 45+ research artifacts across threat intel, compliance, and methodologies
 - **Evidence-backed rigor** - Every claim has receipts. Every pattern has suspended accounts. Every detection rule has measured FPR.
@@ -56,8 +56,7 @@ Production-tested on 1,500+ blocked IPs with 94.04% precision after curation.
 | Framework | Novelty | Status |
 |-----------|---------|--------|
 | [Judge Dredd 6D Verification](./compliance-frameworks/judge-dredd-6d.md) | Compliance-as-code with ethical metrics | Production |
-| [FDA 510(k) Automation](./compliance-frameworks/fda-510k-automation.md) | Healthcare device compliance-as-code | 95% ready |
-| [SOC2 Type 2 Evidence Automation](./compliance-frameworks/soc2-evidence-automation.md) | $0/month manual compliance | 81% automated |
+| [FDA 510(k) Automation](./compliance-frameworks/fda-510k-automation.md) | Healthcare device compliance-as-code | 95% self-scored readiness (not an FDA determination) |
 
 ### Methodologies (Tier 2 - Original Frameworks)
 
@@ -97,7 +96,7 @@ If you use this research, please cite:
 ```bibtex
 @software{duggan2025butterbot,
   author = {Duggan, Patrick},
-  title = {Butterbot by DugganUSA - Enterprise Threat Intelligence Platform},
+  title = {DugganUSA Threat Intelligence Research},
   year = {2025},
   publisher = {Zenodo},
   url = {https://github.com/patrickduggan/enterprise-extraction-platform},
