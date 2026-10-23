@@ -22,8 +22,6 @@ The research pipeline:
 - **Production infrastructure** - Automated daily threat scanning, STIX 2.1 feed generation, Judge Dredd 6D compliance verification
 - **Epistemic discipline** - 95% confidence caps, honest failure reporting, democratic sharing philosophy
 
-**To the naysayers:** This is what bleeding-edge agentic AI looks like when applied with discipline. Not vibes - evidence. Not demos - production. Not promises - suspended threat actors.
-
 **Platform:** Claude Code CLI + Claude Opus 4.5
 **Methodology:** Human-AI collaboration with autonomous multi-agent research sweeps
 **Infrastructure:** Azure Container Apps, Cloudflare, STIX/TAXII feeds
